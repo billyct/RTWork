@@ -1,0 +1,172 @@
+<div id="wrapper" work_id="<%= work_id %>">
+	<div id="main_container" class="main_container container_16 clearfix" style="font-size:12px;">	
+		
+		<div class="box grid_12 round_all">
+			<table class="display table my_tables" id="<%= work_id %>">
+				<thead>
+					<!-- tr>
+						<th colspan="9"><h2><center>biiil</center></h2></th>
+					</tr> -->
+					<tr>
+						<th>构件名称</th>
+						<th>形状</th>
+						<th>直径</th>
+						<th>根数</th>
+						<th>断料长</th>
+						<th>总长</th>
+						<th>单位重</th>
+						<th>总重量</th>
+						<th>备注</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if (tables) { %>
+						<% for(var i=0; i<tables.length; i++) { %>
+							<tr id="<%= tables[i]._id %>">
+								<td class="editable"><%= tables[i].component %></td>
+								<td class="editable"><%= tables[i].shape %></td>
+								<td class="editable"><%= tables[i].reinforcedType %></td>
+								<td class="editable"><%= tables[i].sum %></td>
+								<td><%= tables[i].shapeLength %></td>
+								<td><%= tables[i].totalLength %></td>
+								<td><%= tables[i].unitWeight %></td>
+								<td><%= tables[i].totalWeight %></td>
+								<td class="editable"><%= tables[i].remark %></td>
+								<td>
+									<a href="javascript:void(0);" id="delete"><img src="images/icons/small/grey/Trashcan.png" width="24" height="24" alt="删除" title="删除" /></a>
+								</td>
+							</tr>
+						<% } %>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+		<div class="box grid_4 round_all">
+			<h2 class="box_head grad_colour">输入翻样表数据</h2>
+			<div class="toggle_container">
+				<div class="block">
+					<form>
+						<label>构件名称</label> 
+						<input title="构件名称" type="text" class="medium" id="<%= work_id %>component"> 
+
+
+						<label>形状</label> 
+						<input title="形状(输入公式，在以后会添加上形状的图形)" type="text" class="large" id="<%= work_id %>shape"> 
+		
+						<label>直径(a为一级钢筋，b为二级，c为三级)</label> 
+						<input title="直径（a为一级钢筋，b为二级，c为三级）" type="text" class="small" id="<%= work_id %>reinforcedType">
+
+						<label>根数</label> 
+						<input title="根数" type="text" class="small" id="<%= work_id %>sum">
+				
+						<label>备注</label> 
+						<input title="remark" type="text" class="large" id="<%= work_id %>remark">
+				
+						<button class="button_colour round_all" id="save_table">
+							<img height="24" width="24" alt="保存数据" src="images/icons/small/white/Bended%20Arrow%20Right.png">
+							<span>保存数据</span>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var work_id = '<%= work_id %>';
+
+	$('table#'+work_id).parents('#main_container').css('margin-left', '8px');
+	$('table#'+work_id).dataTable({
+			"bJQueryUI": true,
+			"sScrollX": "",
+			"bSortClasses": false,
+			"aaSorting": [[0,'asc']],
+			"bAutoWidth": true,
+			"bInfo": true,
+			"sScrollY": "100%",	
+			"sScrollX": "100%",
+			"bScrollCollapse": true,
+			"sPaginationType": "full_numbers",
+			"bRetrieve": true,
+			"oLanguage": {
+	            "sLengthMenu": "每页显示 _MENU_ 条",
+	            "sZeroRecords": "没有数据",
+	            "sInfo": "显示 _TOTAL_ 条记录里的 _START_ 到 _END_ 条数据",
+	            "sInfoEmpty": "没有数据",
+	            //"sInfoFiltered": "(filtered from _MAX_ total records)"，
+	            "sSearch": "搜索:",
+	            "oPaginate": {
+						"sFirst":    "第一页",
+						"sPrevious": "上页",
+						"sNext":     "下页",
+						"sLast":     "最后页"
+				  }
+	         },
+	         "sDom": '<"H"lf>t<"F"Tp>',
+			"oTableTools": {
+				"sSwfPath": "libs/DataTables/extras/TableTools/media/swf/copy_cvs_xls_pdf.swf",
+				"aButtons": [
+					{
+						"sExtends": "copy",
+						"sButtonText": "复制",
+						"mColumns": [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+					},
+					{
+						"sExtends": "xls",
+						"mColumns": [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
+						"sTitle": $('table#'+work_id).parents('.window_panel').children('.window_header').children('.window_title_text').text(),
+						"sCharSet": "utf16le",
+						"sFileName": "*.cvs"
+					}
+					// {
+					// 	"sExtends": "pdf",
+					// 	"mColumns": [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
+					// 	"sTitle": $('table#'+work_id).parents('.window_panel').children('.window_header').children('.window_title_text').text(),
+					// 	"sFileName": "*.pdf"
+					// }
+				]
+			},
+	        'fnDrawCallback': function(){
+	        		tableEdit(work_id);
+	        }
+	});
+
+
+	$('input[title], img[title]').tipsy({
+		trigger: 'focus',  
+		offset:'5',
+		gravity: 'w'
+	});
+
+	var component = new LiveValidation('<%= work_id %>component');
+	component.add(Validate.Presence);
+
+	var shape = new LiveValidation('<%= work_id %>shape');
+	shape.add(Validate.Presence);
+	shape.add( Validate.Format, { pattern: /^[\d\*\+\-\/\(\)]+$/ } );
+
+
+	var reinforcedType = new LiveValidation('<%= work_id %>reinforcedType');
+	reinforcedType.add(Validate.Presence);
+	reinforcedType.add( Validate.Format, { pattern: /^[ABCabc]+[\d\.]+$/ } );
+	//diameter.add(Validate.Numericality,{ minimum: 1 });
+
+	var sum = new LiveValidation('<%= work_id %>sum');
+	sum.add(Validate.Presence);
+	sum.add(Validate.Numericality,{ minimum: 1 });
+
+	$('#<%= work_id %>remark').keypress(function(event){
+		if (event.keyCode == 9) {
+			$('#<%= work_id %>component').focus();
+			return false;
+		} else if (event.keyCode == 13) {
+			$('#<%= work_id %>component').focus();
+		}
+	});
+
+	$('#<%= work_id %>component').focus();
+
+	
+</script>

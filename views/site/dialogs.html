@@ -1,0 +1,38 @@
+<%- partial('engineering/main') %>
+
+<!-- create work dialog -->
+<div id="work_dialog" title="创建一张新表">
+	<div class="box grid_8 round_all">
+		<div class="toggle_container">
+			<div class="block">
+				<form>
+					<label>给你的表起个名字吧</label>
+					<input title="表名" type="text" id="work_name" name="work_name" class="large">
+					<button class="button_colour round_all" id="create_work">
+						<img height="24" width="24" alt="创建" src="images/icons/small/white/Bended%20Arrow%20Right.png">
+						<span>创建</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- work edit dialog -->
+<div id="work_edit_dialog" title="修改表">
+	<div class="box grid_8 round_all">
+		<div class="toggle_container">
+			<div class="block">
+				<form>
+					<label>请输入你要修改的表名</label> 
+					<input title="表名" type="text" id="work_edit_name" name="work_edit_name" class="large"> 
+					<button class="button_colour round_all" id="edit_work">
+						<img height="24" width="24" alt="创建" src="images/icons/small/white/Bended%20Arrow%20Right.png">
+						<span>修改</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

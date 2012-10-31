@@ -1,0 +1,51 @@
+<div id="projects">
+	<div class="flat_area grid_8">
+		<h2>我的工程项目 </h2>
+		<p>让我们现在进入状态，通过下面的表单创建我们的<strong>工程项目</strong></p>
+		<p>允许你在一个工程中创建更多的<strong>项目</strong>, 您的<strong>项目列表</strong>都将列在左边的<strong>我的工程项目</strong>中</p>
+		<p>您可以点击左边的工程项目来查看您正操作的工程中的拥有的项目，以及点击项目来查看您的项目状态</p>
+	</div>
+
+	<div class="box grid_8 round_all">
+		<h2 class="box_head grad_colour">创建一个新项目</h2>
+		<a href="#" class="grabber">&nbsp;</a>
+		<a href="#" class="toggle">&nbsp;</a>
+		<div class="toggle_container">
+			<div class="block">
+				<form>
+					<label>项目名</label> 
+					<input title="请输入您想要创建的项目名" type="text" id="project_name" name="project_name" class="large"> 
+					<button class="button_colour round_all" id="create_project">
+						<img height="24" width="24" alt="创建" src="images/icons/small/white/Bended%20Arrow%20Right.png">
+						<span>创建新项目</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="box grid_16 round_all">
+		<table class="display table" id="my_projects"> 
+			<thead> 
+				<tr> 
+					<th>项目名</th> 
+					<th>操作</th>
+				</tr> 
+			</thead> 
+			<tbody>
+				<% if(projects){ %>
+					<% for(var i=0; i<projects.length; i++){ %>
+						<tr id="<%= projects[i].name %>"> 
+							<td><%= projects[i].name %></td> 
+							<td>
+								<a href="javascript:void(0);" id="operating"><img src="images/icons/small/grey/Book%20Large.png" width="24" height="24" alt="操作" title="操作" /></a>
+								<a href="javascript:void(0);" id="edit"><img src="images/icons/small/grey/Create Write.png" width="24" height="24" alt="修改" title="修改" /></a>
+								<a href="javascript:void(0);" id="delete"><img src="images/icons/small/grey/Trashcan.png" width="24" height="24" alt="删除" title="删除" /></a>
+							</td> 
+						</tr>
+					<% } %>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>

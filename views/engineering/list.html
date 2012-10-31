@@ -1,0 +1,117 @@
+<h3>已有工程</h3>
+<div class="box grid_16 round_all">
+	<table class="display" id="my_engineerings">
+		<thead>
+			<tr>
+				<th>工程名</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for(var i=0; i<engineerings.length; i++){%>
+				<tr id="<%= engineerings[i].name %>">
+					<td><%= engineerings[i].name %></td>
+					<td>
+						<a href="javascript:void(0);" id="operating"><img src="images/icons/small/grey/Book%20Large.png" width="24" height="24" alt="操作" title="操作" /></a>
+						<a href="javascript:void(0);" id="edit"><img src="images/icons/small/grey/Create Write.png" width="24" height="24" alt="修改" title="修改" /></a>
+						<a href="javascript:void(0);" id="delete"><img src="images/icons/small/grey/Trashcan.png" width="24" height="24" alt="删除" title="删除" /></a>
+					</td>
+				</tr>
+			<% } %>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript" charset="utf-8">
+	$('#my_engineerings').dataTable({
+			"bJQueryUI": true,
+			"bSortClasses": false,
+			//"bSort": false,
+			"aaSorting": [[0,'asc']],
+			"bAutoWidth": true,
+			"bInfo": false,
+			"sScrollY": "100%",	
+			"sScrollX": "380px",
+			"sScrollXInner": "100%",
+			"bScrollCollapse": true,
+			"sPaginationType": "full_numbers",
+			"bRetrieve": true,
+			"oLanguage": {
+	            "sLengthMenu": "每页显示 _MENU_ 条",
+	            "sZeroRecords": "没有数据",
+	            "sInfo": "显示 _TOTAL_ 条记录里的 _START_ 到 _END_ 条数据",
+	            "sInfoEmpty": "没有数据",
+	            //"sInfoFiltered": "(filtered from _MAX_ total records)"，
+	            "sSearch": "搜索:",
+	            "oPaginate": {
+						"sFirst":    "第一页",
+						"sPrevious": "上页",
+						"sNext":     "下页",
+						"sLast":     "最后页"
+				  }
+	        }
+	});
+	
+	$('#my_engineerings #edit').live('click', function() {
+		var td_edit = $(this).parent().prev();
+		var engineering_name = td_edit.html();
+		td_edit.empty();
+		td_edit.append('<input type="text" id="my_engineering_name" value="'+ engineering_name+'" />');
+		$(this).attr('id','save');
+		$(this).children().attr('title','保存');
+	});
+	
+	$('#my_engineerings #save').live('click', function(){
+		var td_edit = $(this).parent().prev();
+		var engineering_name = td_edit.children('#my_engineering_name').val();
+		
+		$.post('engineering/save', {
+			engineering_old_name : td_edit.parent().attr('id'),
+			engineering_name: engineering_name
+		}, function(data){
+			if (data.success == 'success') {
+				alert('修改成功'+data.message);
+			} else{
+				alert('修改失败'+data.message);
+			}
+		});
+		
+		td_edit.empty();
+		td_edit.append(engineering_name);
+		$(this).attr('id','edit');
+		$(this).children().attr('title','修改');
+		td_edit.attr('id', engineering_name);
+	});
+	
+	$('#my_engineerings #delete').live('click', function() {
+		var tr_edit = $(this).parent().parent();
+		var engineering_name = tr_edit.attr('id');
+		//var engineering_name = td_edit.html();
+		$.post('engineering/delete', {
+			engineering_name: engineering_name
+		},function(data){
+			alert(data.message);
+			if (data.success == 'success') {
+				//return false;
+				$('.tipsy').hide();
+				tr_edit.remove();
+			}	
+		});
+		return false;
+	});
+	
+	$('#my_engineerings #operating').live('click', function(event) {
+		var tr_edit = $(this).parent().parent();
+		var engineering_name = tr_edit.attr('id');
+		$.post('user/set_engineering', {
+			engineering_working_name : engineering_name
+		}, function(data){
+			alert(data.message);
+			if(data.success == 'success'){
+				$('#sidebar #engineering_name').text(engineering_name);
+				$('#engineerings_dialog').dialog('close');
+			}
+		});
+		return false;
+	});
+	
+</script>

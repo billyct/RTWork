@@ -1,0 +1,42 @@
+<div id="engineerings_dialog" title="我的工程">
+	<div class="box grid_8 round_all">
+		<h3>创建一个新工程</h3>
+		<a href="#" class="toggle">&nbsp;</a>
+		<form>
+			<label>工程名</label> 
+			<input id="engineering_name" name="engineering_name" type="text">
+			<input id="create_engineering" type="button" value="创建新工程" />
+		</form>
+		<br />
+	</div>
+	
+	<hr />
+	<h3>已有工程</h3>
+	<div class="box grid_16 round_all">
+		<table class="display" id="my_engineerings">
+			<thead>
+				<tr>
+					<th>工程名</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for(var i=0; i<engineerings.length; i++){%>
+					<tr id="<%= engineerings[i].name %>">
+						<td><%= engineerings[i].name %></td>
+						<td>
+							<a href="javascript:void(0);" id="operating"><img src="images/icons/small/grey/Book%20Large.png" width="24" height="24" alt="操作" title="操作" /></a>
+							<a href="javascript:void(0);" id="edit"><img src="images/icons/small/grey/Create Write.png" width="24" height="24" alt="修改" title="修改" /></a>
+							<a href="javascript:void(0);" id="delete"><img src="images/icons/small/grey/Trashcan.png" width="24" height="24" alt="删除" title="删除" /></a>
+						</td>
+					</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript" charset="utf-8">
+<% if(!engineering_working){ %>
+	$( "#engineerings_dialog" ).dialog("open");
+<% } %>
+</script>

@@ -1,0 +1,37 @@
+<div id="sidebar">
+	<div class="cog">+</div>
+	<a href="#" class="logo"><span>RTWoker</span></a>
+
+	<div class="user_box round_all clearfix">
+		<img src="/images/profile.jpg" width="55" alt="Profile Pic" />
+		<h2 id="engineering_name">
+			<% if(engineering_working){ %>
+				<%= engineering_working.name %>
+			<% }else{ %>
+				无工程状态
+			<% } %>
+		</h2>
+		<h3><a class="text_shadow" href="#"><%= user.name %>	</a></h3>
+		<ul>
+			<li><a href="javascript:void(0);" id="open_engineerings_dialog">修改工程</a><span class="divider">|</span></li>
+			<li><a href="/signout">退出</a></li>
+		</ul>
+	</div><!-- #user_box -->
+
+	<ul id="accordion">
+		<li><a href="javascript:void(0);" class="top_level"><img src="/images/icons/small/grey/File Cabinet.png"/>我的工程项目</a>
+			<% if(projects){ %>
+				<ul class="drawer" id="my_projects">
+				<% for(var i=0; i<projects.length; i++){ %>
+					<li id="<%= projects[i].name %>">
+						<a href="javascript:void(0);"><%= projects[i].name %></a>
+						<span class="alert badge alert_grey" id="work_count"><%= projects[i].work_count %></span>
+					</li>
+				<% } %>
+				</ul>
+			<% } %>
+		</li>
+		<li><a href="javascript:void(0);" class="top_level" id="chat_room"><img src="/images/icons/small/grey/Android.png"/>即时通讯</a>
+		</li>
+	</ul>
+</div><!-- #sidebar -->

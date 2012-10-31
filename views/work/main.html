@@ -1,0 +1,87 @@
+<div id="<%= project_name %>" class="project">
+	<div class="flat_area grid_16">
+		<h2>我的翻样表堆集 <small>你可以在下面来统计你的项目表</small></h2>
+		<p>
+			您可以创建更多的<strong>表堆</strong>, 来使你的项目的统计更加<strong>精细</strong>
+		</p>
+		<p>
+			如果你想要创建一个表，那么就单击下面的<strong>创建按钮</strong>
+		</p>
+		<form id="filter" class="clearfix">
+			<button class="button_colour round_all" id="open_work_dialog">
+				<img src="images/icons/small/white/Document.png" width="24" height="24" alt="创建一张新表">
+				<span>创建一张新表</span>
+			</button>
+		</form>
+		<div class="indent gallery" id="works">
+			<%- partial('works') %>
+		</div>
+	</div>
+
+	<div class="box grid_3">
+		<div class="indent gallery" id="works_search">
+			<ul class="clearfix" style="padding-left:13px;">
+				<li class="placeholder"><a href="javascript:void(0);"> <span>请将您想要统计的表拖拽到这里(拖进来的表通过右键来删除)</span></a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="box grid_13">
+		<h2 class="box_head grad_colour">数据统计(你可以将以上的表堆拖拽到左边的框中来使用统计)</h2>
+		<a href="#" class="toggle">&nbsp;</a>
+		<div class="toggle_container" id="works_search_data">
+			<ul class="block content_accordion no_header">
+				<li>
+					<a href="#" class="handle">&nbsp;</a>
+					<h3 class="bar">按照构件统计的数据</h3>
+					<div class="content" id="component_data">
+						<ul><li><strong>这里是显示按照构件来统计的数据</strong></li></ul> 
+					</div>
+				</li>
+				<li>
+					<a href="#" class="handle">&nbsp;</a>
+					<h3 class="bar">按照钢筋分类统计的数据</h3>
+					<div class="content" id="reinforced_data">
+						<ul><li><strong>这里是显示按照钢筋分类来统计的数据</strong></li></ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+
+$('#'+'<%= project_name %>'+' #works li.work').draggable({
+	revert: "invalid", // when not dropped, the item will revert back to its initial position
+	helper: "clone",
+	cursor: "point",
+	opacity: 0.7
+});
+
+$('#'+'<%= project_name %>'+' #works_search ul').droppable({
+	accept: '#'+'<%= project_name %>'+' #works li.work',
+	activeClass: "ui-state-highlight",
+	drop: function( event, ui ) {
+		$(this).find( ".placeholder" ).remove();
+
+		var insertLi = ui.draggable.clone();
+		insertLi.children().children('img').remove();
+
+		insertLi.appendTo(this);
+
+		tableSearch(this, '<%= project_name %>');
+
+	}
+});
+
+
+
+
+</script>
+
+
+
+
+

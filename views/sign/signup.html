@@ -1,0 +1,94 @@
+<% if(!user){ %>
+<div id="signup_box">
+	<div id="main_container" class="main_container container_16">
+		<div class="box grid_12">
+			<h2 class="box_head grad_colour round_top">注册向导</h2>
+			<div class="toggle_container wizard">
+				<div id="progressbar" class="progress_in_header">
+					<span>进度条</span>
+				</div>
+				<div class="wizard_steps">
+					<ul class="clearfix">
+						<li class="current">
+							<a href="#step_1" class="clearfix"> <span>1. <strong>注册</strong></span> <small>一分钟完成注册</small> </a>
+						</li>
+						<li>
+							<a href="#step_2" class="clearfix"> <span>2. <strong>登录并创建一个工程</strong></span> <small>准备开始工作</small> </a>
+						</li>
+						<li>
+							<a href="#step_3" class="clearfix"> <span>3. <strong>完成</strong></span> <small>享受我们带给您的便捷吧</small> </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="block grid_16 alpha omega wizard_content" style="height:320px;">
+				<div id="step_1" class="step" style="display:block;">
+					<h1>1. 注册</h1>
+					<hr class="grid_16 alpha omega">
+					<form>
+						<fieldset class="grid_8 alpha">
+							<label>用户名</label>
+							<input title="输入您的用户名" type="text" id="reg_username" name="reg_username" class="round_all indent large required">
+						</fieldset>
+						<fieldset class="grid_8 omega">
+							<label>Email</label>
+							<input title="输入您的Email地址" type="text" id="reg_email" name="reg_email" class="round_all indent large">
+						</fieldset>
+						<fieldset class="grid_8 alpha">
+							<label>密码</label>
+							<input title="输入您的密码" type="password" id="reg_password" name="reg_password" class="large">
+						</fieldset>
+						<fieldset class="grid_8 omega">
+							<label>确认密码</label>
+							<input title="重新输入您的密码" type="password" id="reg_password_confirmed" name="reg_password_confirmed" class="large">
+						</fieldset>
+						<hr class="grid_16 alpha omega">
+						<fieldset class="grid_8 alpha">
+							<button class="next_step button_colour round_all" id="step_2">
+								<img height="24" width="24" alt="注册进入下一步" src="/images/icons/small/white/Bended Arrow Right.png">
+									<span>注册进入下一步</span>
+							</button>
+						</fieldset>
+						<fieldset class="grid_8 omega">
+							<button id="cancel" class="button_colour round_all" id="step_2">
+								<img height="24" width="24" alt="取消" src="/images/icons/small/white/Bended Arrow Left.png">
+									<span>取消</span>
+							</button>
+						</fieldset>
+					</form>
+				</div>
+				<div id="step_2" class="step">
+					<h1>2. 创建一个新工程</h1>
+					<hr class="grid_16 alpha omega">
+					<form>
+						<fieldset class="grid_8 alpha">
+							<label>工程名</label>
+							<input title="输入你的新工程名" type="text" id="engineering_name" name="engineering_name" class="large">
+						</fieldset>
+						<hr class="grid_16 alpha omega">
+						<button class="next_step button_colour round_all" id="step_3">
+							<img height="24" width="24" alt="下一步" src="/images/icons/small/white/Bended Arrow Right.png">
+								<span>下一步</span>
+						</button>
+					</form>
+				</div>
+
+				<div id="step_3" class="step">
+					<h1>3. 完成(本页面有说明来帮助你在这里工作)</h1>
+					<hr class="grid_16 alpha omega">
+					<form>
+						<fieldset class="grid_8 alpha">
+							<p>这是一个完成页面，简单的描述如何进行该应用的操作</p>
+						</fieldset>
+						<hr class="grid_16 alpha omega">
+						<button class="next_step button_colour round_all" id="step_finish">
+							<img height="24" width="24" alt="完成" src="/images/icons/small/white/Bended Arrow Right.png">
+							<span>完成</span>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>

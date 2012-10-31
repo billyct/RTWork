@@ -1,0 +1,12 @@
+<ul class="clearfix">
+	<% if(works){ %>
+		<% for(var i=0; i<works.length; i++){ %>
+			<li class="work" id="<%= works[i].name %>" work_id="<%= works[i]._id %>">
+				<a href="javascript:void(0);"> 
+				<img src="images/gallery/blue/image05_thumb.jpg"/>
+				<span class="name"><%= works[i].name %></span>
+				</a>
+			</li>
+		<% } %>
+	<% } %>
+</ul>

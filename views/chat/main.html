@@ -1,0 +1,93 @@
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<div id="wrapper">
+	<div id="main_container" class="main_container container_16 clearfix" style="font-size:12px;margin-left:8px;height:100%">
+		<div class="box grid_12 round_all tabs" id="chat_room">
+			<ul class="tab_header grad_colour clearfix" id="chat_room_title">
+				<li id="<%= user.name %>">
+					<a href="#tabs-public_room"><%= user.name %>的公共聊天页</a>
+				</li>
+			</ul>
+			<a href="#" class="grabber">&nbsp;</a>
+			<a href="#" class="toggle">&nbsp;</a>
+			<div class="toggle_container" id="chat_room_content">
+				<div id="tabs-public_room" class="block">
+					<div class="content height_300">
+						<ul class="full_width">
+							<!-- <li><h6>billyct:</h6>Aenean tempor ullamcorper</li> -->
+						</ul>
+						<div id="scroll_end"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box grid_4 round_all">
+			<ul class="block content_accordion no_header" id="friends_list">
+				<li>
+					<a href="#" class="handle">&nbsp;</a>
+					<span class="chat_friends_num alert badge alert_green " id="online_users_count">0</span>
+					<h3 class="bar">我的好友</h3>
+					<div class="content">
+						<ul id="online_users">
+						<% if (verifyFriends) { %>
+							<% for(var i=0; i<verifyFriends.length; i++) { %>
+								<li id="<%= verifyFriends[i] %>" >
+									<a href="javascript:void(0);"><%= verifyFriends[i] %></a>
+								</li>
+							<% } %>
+						<% } %>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="#" class="handle">&nbsp;</a>
+					<span class="chat_friends_num  alert badge alert_navy" id="un_verify_friends_count"><%= unVerifyFriends.length %></span>
+					<h3 class="bar">未认证好友</h3>
+					<div class="content">
+						<ul id="un_verify_friends">
+						<% if (unVerifyFriends) { %>
+							<% for(var i=0; i<unVerifyFriends.length; i++) { %>
+								<li id="<%= unVerifyFriends[i] %>"><a href="javascript:void(0);"><%= unVerifyFriends[i] %></a></li>
+							<% } %>
+						<% } %>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="#" class="handle">&nbsp;</a>
+					<span class="chat_friends_num  alert badge alert_red" id="for_verify_friends_count"><%= forVerifyFriends.length %></span>
+					<h3 class="bar">陌生人</h3>
+					<div class="content">
+						<ul id="for_verify_friends">
+						<% if (forVerifyFriends) { %>
+							<% for(var i=0; i<forVerifyFriends.length; i++) { %>
+								<li class="for_verify_friend">
+									<a href="javascript:void(0);"><%= forVerifyFriends[i] %></a>
+								</li>
+							<% } %>
+						<% } %>
+						</ul>
+					</div>
+				</li>
+			</ul>
+			<div class="block">
+				<form>
+					<label>添加好友</label> 
+					<input id="friend_name" name="friend_name" type="text" class="large" />
+					<button class="button_colour round_all" id="add_friend"><img height="24" width="24" alt="Bended Arrow Right" src="images/icons/small/white/Bended%20Arrow%20Right.png"><span>添加</span></button>
+				</form>
+			</div>
+		</div>
+		<div class="box grid_12 round_all">
+			<div class="block">
+				<form id="chat_form">
+					<input type="hidden" value="<%= user.name %>" id="chat_username"/>
+					<textarea id="chat_content" name="chat_content" class="chat_content"></textarea> 
+					<button class="button_colour round_all" id="chat_submit" chat_name="public" room_name = "public_room"><img height="24" width="24" alt="Bended Arrow Right" src="images/icons/small/white/Bended%20Arrow%20Right.png"><span>发送</span></button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="javascripts/chat.js" type="text/javascript" charset="utf-8"></script>

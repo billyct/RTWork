@@ -1,0 +1,20 @@
+<% if(!user){ %>
+	<div id="wrapper">
+		<%- partial('sign/signin') %>
+	</div>
+	<script type="text/javascript" src="/javascripts/sign.js"></script>
+<% }else{ %>
+
+	<div id="wrapper">
+		<%- partial('site/slidebar') %>
+		<div id="main_container" class="main_container container_16 clearfix" >			
+			<%- partial('site/dialogs') %>
+			<%- partial('site/header') %>
+			<%- partial('project/main') %>
+		</div>
+		<%- partial('site/footer') %>
+	</div>
+	<script type="text/javascript" src="/javascripts/functions.js"></script>
+<% } %>
+
+
