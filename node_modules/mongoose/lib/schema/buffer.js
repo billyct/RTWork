@@ -1,9 +1,10 @@
-/*!
+/**
  * Module dependencies.
  */
 
 var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
+  , BufferNumberSchema = function () {}
   , MongooseBuffer = require('../types').Buffer
   , Binary = MongooseBuffer.Binary
   , Query = require('../query');
@@ -13,7 +14,6 @@ var SchemaType = require('../schematype')
  *
  * @param {String} key
  * @param {SchemaType} cast
- * @inherits SchemaType
  * @api private
  */
 
@@ -21,7 +21,7 @@ function SchemaBuffer (key, options) {
   SchemaType.call(this, key, options, 'Buffer');
 };
 
-/*!
+/**
  * Inherits from SchemaType.
  */
 
@@ -41,8 +41,7 @@ SchemaBuffer.prototype.checkRequired = function (value) {
  * Casts contents
  *
  * @param {Object} value
- * @param {Document} doc document that triggers the casting
- * @param {Boolean} init
+ * @param {Document} document that triggers the casting
  * @api private
  */
 
@@ -66,9 +65,6 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
   throw new CastError('buffer', value);
 };
 
-/*!
- * ignore
- */
 function handleSingle (val) {
   return this.castForQuery(val);
 }
@@ -90,14 +86,6 @@ SchemaBuffer.prototype.$conditionalHandlers = {
   , '$lte': handleSingle
 };
 
-/**
- * Casts contents for queries.
- *
- * @param {String} $conditional
- * @param {any} [value]
- * @api private
- */
-
 SchemaBuffer.prototype.castForQuery = function ($conditional, val) {
   var handler;
   if (arguments.length === 2) {
@@ -111,7 +99,7 @@ SchemaBuffer.prototype.castForQuery = function ($conditional, val) {
   }
 };
 
-/*!
+/**
  * Module exports.
  */
 

@@ -1,5 +1,5 @@
 
-/*!
+/**
  * Module dependencies.
  */
 
@@ -10,7 +10,6 @@ var SchemaType = require('../schematype');
  *
  * @param {String} path
  * @param {Object} options
- * @inherits SchemaType
  * @api private
  */
 
@@ -26,14 +25,13 @@ function Mixed (path, options) {
   SchemaType.call(this, path, options);
 };
 
-/*!
+/**
  * Inherits from SchemaType.
  */
-
 Mixed.prototype.__proto__ = SchemaType.prototype;
 
 /**
- * Required validator
+ * Required validator for mixed type
  *
  * @api private
  */
@@ -43,9 +41,7 @@ Mixed.prototype.checkRequired = function (val) {
 };
 
 /**
- * Casts `val` for Mixed.
- *
- * _this is a no-op_
+ * Noop casting
  *
  * @param {Object} value to cast
  * @api private
@@ -55,20 +51,12 @@ Mixed.prototype.cast = function (val) {
   return val;
 };
 
-/**
- * Casts contents for queries.
- *
- * @param {String} $cond
- * @param {any} [val]
- * @api private
- */
-
 Mixed.prototype.castForQuery = function ($cond, val) {
   if (arguments.length === 2) return val;
   return $cond;
 };
 
-/*!
+/**
  * Module exports.
  */
 

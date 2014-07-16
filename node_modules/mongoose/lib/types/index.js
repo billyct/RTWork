@@ -1,5 +1,5 @@
 
-/*!
+/**
  * Module exports.
  */
 
@@ -10,4 +10,5 @@ exports.Document = // @deprecate
 exports.Embedded = require('./embedded');
 
 exports.DocumentArray = require('./documentarray');
+exports.Number = require('./number');
 exports.ObjectId = require('./objectid');

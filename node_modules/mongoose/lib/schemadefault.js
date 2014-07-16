@@ -1,16 +1,14 @@
 
-/*!
+/**
  * Module dependencies.
  */
 
 var Schema = require('./schema')
 
 /**
- * Default model for querying the system.profiles collection.
- *
- * @property system.profile
- * @receiver exports
- * @api private
+ * Default model for querying the system.profiles
+ * collection (it only exists when profiling is
+ * enabled.
  */
 
 exports['system.profile'] = new Schema({

@@ -1,5 +1,5 @@
 
-/*!
+/**
  * Module exports.
  */
 
@@ -20,9 +20,3 @@ exports.Date = require('./date');
 exports.ObjectId = require('./objectid');
 
 exports.Mixed = require('./mixed');
-
-// alias
-
-exports.Oid = exports.ObjectId;
-exports.Object = exports.Mixed;
-exports.Bool = exports.Boolean;

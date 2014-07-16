@@ -1,4 +1,4 @@
-/*!
+/**
  * Module dependencies.
  */
 
@@ -13,7 +13,6 @@ var SchemaType = require('../schematype')
  *
  * @param {String} key
  * @param {Object} options
- * @inherits SchemaType
  * @api private
  */
 
@@ -21,7 +20,7 @@ function ObjectId (key, options) {
   SchemaType.call(this, key, options, 'ObjectID');
 };
 
-/*!
+/**
  * Inherits from SchemaType.
  */
 
@@ -46,7 +45,7 @@ ObjectId.prototype.checkRequired = function checkRequired (value) {
  *
  * @param {Object} value
  * @param {Object} scope
- * @param {Boolean} init whether this is an initialization cast
+ * @param {Boolean} whether this is an initialization cast
  * @api private
  */
 
@@ -66,10 +65,6 @@ ObjectId.prototype.cast = function (value, scope, init) {
 
   throw new CastError('object id', value);
 };
-
-/*!
- * ignore
- */
 
 function handleSingle (val) {
   return this.cast(val);
@@ -93,14 +88,6 @@ ObjectId.prototype.$conditionalHandlers = {
   , '$all': handleArray
 };
 
-/**
- * Casts contents for queries.
- *
- * @param {String} $conditional
- * @param {any} [val]
- * @api private
- */
-
 ObjectId.prototype.castForQuery = function ($conditional, val) {
   var handler;
   if (arguments.length === 2) {
@@ -109,7 +96,8 @@ ObjectId.prototype.castForQuery = function ($conditional, val) {
       throw new Error("Can't use " + $conditional + " with ObjectId.");
     return handler.call(this, val);
   } else {
-    return this.cast($conditional);
+    val = $conditional;
+    return this.cast(val);
   }
 };
 
@@ -121,25 +109,17 @@ ObjectId.prototype.castForQuery = function ($conditional, val) {
 
 ObjectId.prototype.auto = function (turnOn) {
   if (turnOn) {
-    this.default(defaultId);
-    this.set(resetId)
+    this.default(function(){
+      return new oid();
+    });
+    this.set(function (v) {
+      this.__id = null;
+      return v;
+    })
   }
 };
 
-/*!
- * ignore
- */
-
-function defaultId () {
-  return new oid();
-};
-
-function resetId (v) {
-  this.__id = null;
-  return v;
-}
-
-/*!
+/**
  * Module exports.
  */
 

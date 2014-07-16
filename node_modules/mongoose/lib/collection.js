@@ -1,40 +1,24 @@
 
-/*!
- * Module dependencies.
- */
-
-var STATES = require('./connectionstate')
-
 /**
- * Abstract Collection constructor
+ * Collection constructor
  *
- * This is the base class that drivers inherit from and implement.
- *
- * @param {String} name name of the collection
- * @param {Connection} conn A MongooseConnection instance
- * @param {Object} opts optional collection options
+ * @param {String} collection name
+ * @param {Collection} connection object
  * @api public
  */
 
-function Collection (name, conn, opts) {
+function Collection (name, conn) {
   this.name = name;
   this.conn = conn;
   this.buffer = true;
   this.queue = [];
-
-  if ('number' == typeof opts) opts = { size: opts };
-  this.opts = opts || {};
-
-  if (STATES.connected == this.conn.readyState) {
-    this.onOpen();
-  }
+  if (this.conn.readyState == 1) this.onOpen();
 };
 
 /**
  * The collection name
  *
  * @api public
- * @property name
  */
 
 Collection.prototype.name;
@@ -43,7 +27,6 @@ Collection.prototype.name;
  * The Connection instance
  *
  * @api public
- * @property conn
  */
 
 Collection.prototype.conn;
@@ -71,11 +54,10 @@ Collection.prototype.onClose = function () {
 };
 
 /**
- * Queues a method for later execution when its
- * database connection opens.
+ * Adds a callback to the queue
  *
- * @param {String} name name of the method to queue
- * @param {Array} args arguments to pass to the method when executed
+ * @param {String} method name
+ * @param {Array} arguments
  * @api private
  */
 
@@ -85,7 +67,7 @@ Collection.prototype.addQueue = function (name, args) {
 };
 
 /**
- * Executes all queued methods and clears the queue.
+ * Executes the current queue
  *
  * @api private
  */
@@ -99,7 +81,9 @@ Collection.prototype.doQueue = function () {
 };
 
 /**
- * Abstract method that drivers must implement.
+ * Ensure index function
+ *
+ * @api private
  */
 
 Collection.prototype.ensureIndex = function(){
@@ -107,7 +91,9 @@ Collection.prototype.ensureIndex = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * FindAndModify command
+ *
+ * @api private
  */
 
 Collection.prototype.findAndModify = function(){
@@ -115,7 +101,9 @@ Collection.prototype.findAndModify = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * FindOne command
+ *
+ * @api private
  */
 
 Collection.prototype.findOne = function(){
@@ -123,7 +111,9 @@ Collection.prototype.findOne = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * Find command
+ *
+ * @api private
  */
 
 Collection.prototype.find = function(){
@@ -131,7 +121,9 @@ Collection.prototype.find = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * Insert command
+ *
+ * @api private
  */
 
 Collection.prototype.insert = function(){
@@ -139,7 +131,9 @@ Collection.prototype.insert = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * Update command
+ *
+ * @api private
  */
 
 Collection.prototype.save = function(){
@@ -147,7 +141,9 @@ Collection.prototype.save = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * Insert command
+ *
+ * @api private
  */
 
 Collection.prototype.update = function(){
@@ -155,7 +151,9 @@ Collection.prototype.update = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
+ * getIndexes command
+ *
+ * @api private
  */
 
 Collection.prototype.getIndexes = function(){
@@ -163,14 +161,6 @@ Collection.prototype.getIndexes = function(){
 };
 
 /**
- * Abstract method that drivers must implement.
- */
-
-Collection.prototype.mapReduce = function(){
-  throw new Error('Collection#mapReduce unimplemented by driver');
-};
-
-/*!
  * Module exports.
  */
 

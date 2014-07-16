@@ -1,5 +1,5 @@
 
-/*!
+/**
  * Module dependencies.
  */
 
@@ -9,10 +9,7 @@ var EventEmitter = util.EventEmitter;
 /**
  * Promise constructor.
  *
- * @param {Function} back a callback+errback that accepts `fn(err, ...){}` as signature
- * @inherits NodeJS EventEmitter http://nodejs.org/api/events.html#events_class_events_eventemitter
- * @event `err`: Emits when the promise resolves to an error.
- * @event `complete`: Emits when the promise resolves sucessfully.
+ * @param {Function} a callback+errback that takes err, ... as signature
  * @api public
  */
 
@@ -22,20 +19,16 @@ function Promise (back) {
     this.addBack(back);
 };
 
-/*!
+/**
  * Inherits from EventEmitter.
  */
 
 Promise.prototype.__proto__ = EventEmitter.prototype;
 
 /**
- * Adds `listener` to the `event`.
+ * Adds an event or fires the callback right away.
  *
- * If `event` is either `error` or `complete` and the event has already been emitted, the`listener` is called immediately and passed the results of the original emitted event.
- *
- * @param {Event} event
- * @param {Function} callback
- * @return {Promise} this
+ * @return promise
  * @api public
  */
 
@@ -49,7 +42,7 @@ Promise.prototype.on = function (event, callback) {
 };
 
 /**
- * Keeps track of emitted events to run them on `on`.
+ * Keeps track of emitted events to run them on `on`
  *
  * @api private
  */
@@ -67,7 +60,7 @@ Promise.prototype.emit = function (event) {
 };
 
 /**
- * Shortcut for emitting the `complete` event.
+ * Shortcut for emitting complete event
  *
  * @api public
  */
@@ -78,10 +71,9 @@ Promise.prototype.complete = function () {
 };
 
 /**
- * Shortcut for emitting the `err` event.
+ * Shortcut for emitting err event
  *
  * @api public
- * @return {Promise}
  */
 
 Promise.prototype.error = function (err) {
@@ -90,9 +82,9 @@ Promise.prototype.error = function (err) {
 };
 
 /**
- * Shortcut for `.on('complete', fn)`.
+ * Shortcut for `.on('complete', fn)`
  *
- * @return {Promise}
+ * @return promise
  * @api public
  */
 
@@ -101,9 +93,9 @@ Promise.prototype.addCallback = function (fn) {
 };
 
 /**
- * Shortcut for `.on('err', fn)`.
+ * Shortcut for `.on('err', fn)`
  *
- * @return {Promise}
+ * @return promise
  * @api public
  */
 
@@ -112,10 +104,10 @@ Promise.prototype.addErrback = function (fn) {
 };
 
 /**
- * Adds a single function that's both a callback and errback.
+ * Adds a single function that's both callback and errback
  *
- * @param {Function} fn
- * @return {Promise}
+ * @return promise
+ * @api private
  */
 
 Promise.prototype.addBack = function (fn) {
@@ -132,10 +124,12 @@ Promise.prototype.addBack = function (fn) {
 };
 
 /**
- * Sugar for handling cases where you may be resolving to either an error condition or a success condition.
+ * Sugar for handling cases where you may be
+ * resolving to either an error condition or a 
+ * success condition.
  *
- * @param {Error} err optional error or null
- * @param {Object} val value to complete the promise with
+ * @param {Error} optional error or null
+ * @param {Object} value to complete the promise with
  * @api public
  */
 
@@ -144,7 +138,7 @@ Promise.prototype.resolve = function (err, val) {
   return this.complete(val);
 };
 
-/*!
+/**
  * Module exports.
  */
 

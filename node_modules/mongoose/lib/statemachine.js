@@ -1,11 +1,11 @@
 
-/*!
+/**
  * Module dependencies.
  */
 
 var utils = require('./utils');
 
-/*!
+/**
  * StateMachine represents a minimal `interface` for the
  * constructors it builds via StateMachine.ctor(...).
  *
@@ -17,7 +17,7 @@ var StateMachine = module.exports = exports = function StateMachine () {
   this.states = {};
 }
 
-/*!
+/**
  * StateMachine.ctor('state1', 'state2', ...)
  * A factory method for subclassing StateMachine.
  * The arguments are a list of states. For each state,
@@ -59,27 +59,28 @@ StateMachine.ctor = function () {
   return ctor;
 };
 
-/*!
+/**
  * This function is wrapped by the state change functions:
- *
  * - `require(path)`
  * - `modify(path)`
  * - `init(path)`
- *
  * @api private
  */
 
 StateMachine.prototype._changeState = function _changeState (path, nextState) {
-  var prevBucket = this.states[this.paths[path]];
+  var prevState = this.paths[path]
+    , prevBucket = this.states[prevState];
+
+  delete this.paths[path];
   if (prevBucket) delete prevBucket[path];
 
   this.paths[path] = nextState;
   this.states[nextState][path] = true;
 }
 
-/*!
- * ignore
- */
+StateMachine.prototype.stateOf = function stateOf (path) {
+  return this.paths[path];
+}
 
 StateMachine.prototype.clear = function clear (state) {
   var keys = Object.keys(this.states[state])
@@ -93,10 +94,9 @@ StateMachine.prototype.clear = function clear (state) {
   }
 }
 
-/*!
+/**
  * Checks to see if at least one path is in the states passed in via `arguments`
  * e.g., this.some('required', 'inited')
- *
  * @param {String} state that we want to check for.
  * @private
  */
@@ -109,7 +109,7 @@ StateMachine.prototype.some = function some () {
   });
 }
 
-/*!
+/**
  * This function builds the functions that get assigned to `forEach` and `map`,
  * since both of those methods share a lot of the same logic.
  *
@@ -138,7 +138,7 @@ StateMachine.prototype._iter = function _iter (iterMethod) {
   };
 }
 
-/*!
+/**
  * Iterates over the paths that belong to one of the parameter states.
  *
  * The function profile can look like:
@@ -157,7 +157,7 @@ StateMachine.prototype.forEach = function forEach () {
   return this.forEach.apply(this, arguments);
 }
 
-/*!
+/**
  * Maps over the paths that belong to one of the parameter states.
  *
  * The function profile can look like:

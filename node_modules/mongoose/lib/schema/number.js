@@ -1,16 +1,16 @@
-/*!
+/**
  * Module requirements.
  */
 
 var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
+  , MongooseNumber = require('../types/number');
 
 /**
  * Number SchemaType constructor.
  *
  * @param {String} key
  * @param {Object} options
- * @inherits SchemaType
  * @api private
  */
 
@@ -18,7 +18,7 @@ function SchemaNumber (key, options) {
   SchemaType.call(this, key, options, 'Number');
 };
 
-/*!
+/**
  * Inherits from SchemaType.
  */
 
@@ -39,21 +39,9 @@ SchemaNumber.prototype.checkRequired = function checkRequired (value) {
 };
 
 /**
- * Sets a maximum number validator.
+ * Sets a maximum number validator
  *
- * ####Example:
- *
- *     var s = new Schema({ n: { type: Number, min: 10 })
- *     var M = db.model('M', s)
- *     var m = new M({ n: 9 })
- *     m.save(function (err) {
- *       console.error(err) // validator error
- *       m.n = 10;
- *       m.save() // success
- *     })
- *
- * @param {Number} value minimum number
- * @param {String} message
+ * @param {Number} minimum number
  * @api public
  */
 
@@ -70,21 +58,9 @@ SchemaNumber.prototype.min = function (value, message) {
 };
 
 /**
- * Sets a maximum number validator.
- *
- * ####Example:
- *
- *     var s = new Schema({ n: { type: Number, max: 10 })
- *     var M = db.model('M', s)
- *     var m = new M({ n: 11 })
- *     m.save(function (err) {
- *       console.error(err) // validator error
- *       m.n = 10;
- *       m.save() // success
- *     })
+ * Sets a maximum number validator
  *
  * @param {Number} maximum number
- * @param {String} message
  * @api public
  */
 
@@ -103,9 +79,8 @@ SchemaNumber.prototype.max = function (value, message) {
 /**
  * Casts to number
  *
- * @param {Object} value value to cast
- * @param {Document} doc document that triggers the casting
- * @param {Boolean} init
+ * @param {Object} value to cast
+ * @param {Document} document that triggers the casting
  * @api private
  */
 
@@ -115,30 +90,23 @@ SchemaNumber.prototype.cast = function (value, doc, init) {
   if (!isNaN(value)){
     if (null === value) return value;
     if ('' === value) return null;
-    if ('string' == typeof value) value = Number(value);
-    if (value instanceof Number) return value
-    if ('number' == typeof value) return value;
-    if (value.toString && !Array.isArray(value) &&
-        value.toString() == Number(value)) {
-      return new Number(value)
-    }
+    if ('string' === typeof value) value = Number(value);
+    if (value instanceof Number || typeof value == 'number' ||
+       (value.toString && value.toString() == Number(value)))
+      return new MongooseNumber(value, this.path, doc);
   }
 
   throw new CastError('number', value);
 };
 
-/*!
- * ignore
- */
-
 function handleSingle (val) {
-  return this.cast(val)
+  return this.cast(val).valueOf();
 }
 
 function handleArray (val) {
   var self = this;
   return val.map( function (m) {
-    return self.cast(m)
+    return self.cast(m).valueOf();
   });
 }
 
@@ -154,14 +122,6 @@ SchemaNumber.prototype.$conditionalHandlers = {
   , '$all': handleArray
 };
 
-/**
- * Casts contents for queries.
- *
- * @param {String} $conditional
- * @param {any} [value]
- * @api private
- */
-
 SchemaNumber.prototype.castForQuery = function ($conditional, val) {
   var handler;
   if (arguments.length === 2) {
@@ -171,11 +131,11 @@ SchemaNumber.prototype.castForQuery = function ($conditional, val) {
     return handler.call(this, val);
   } else {
     val = this.cast($conditional);
-    return val == null ? val : val
+    return val == null ? val : val.valueOf();
   }
 };
 
-/*!
+/**
  * Module exports.
  */
 

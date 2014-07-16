@@ -1,14 +1,14 @@
 {
-    "name": "application-name"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.7"
-	, "ejs": ">=0.0.1"
-	, "eventproxy": ">=0.0.1"
-	, "mongoose": ">=0.0.1"
-	, "socket.io": ">=0.0.1"
-	, "validator": ">=0.0.1"
-	, "zeparser": ">=0.0.1"
+  "name": "rtwork",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "2.x",
+    "ejs": "0.x",
+    "eventproxy": "0.x",
+    "mongoose": "2.x",
+    "socket.io": "0.x",
+    "validator": "1.x",
+    "zeparser": "*"
   }
 }

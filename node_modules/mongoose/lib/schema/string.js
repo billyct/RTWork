@@ -1,5 +1,5 @@
 
-/*!
+/**
  * Module dependencies.
  */
 
@@ -10,8 +10,6 @@ var SchemaType = require('../schematype')
  * String SchemaType constructor.
  *
  * @param {String} key
- * @param {Object} options
- * @inherits SchemaType
  * @api private
  */
 
@@ -21,28 +19,16 @@ function SchemaString (key, options) {
   SchemaType.call(this, key, options, 'String');
 };
 
-/*!
+/**
  * Inherits from SchemaType.
  */
 
 SchemaString.prototype.__proto__ = SchemaType.prototype;
 
 /**
- * Adds enumeration values and a coinciding validator.
+ * Adds enumeration values
  *
- * ####Example:
- *
- *     var states = 'opening open closing closed'.split(' ')
- *     var s = new Schema({ state: { type: String, enum: states })
- *     var M = db.model('M', s)
- *     var m = new M({ state: 'invalid' })
- *     m.save(function (err) {
- *       console.error(err) // validator error
- *       m.state = 'open'
- *       m.save() // success
- *     })
- *
- * @param {String} [args...] enumeration values
+ * @param {multiple} enumeration values
  * @api public
  */
 
@@ -67,113 +53,65 @@ SchemaString.prototype.enum = function () {
   if (!this.enumValidator) {
     var values = this.enumValues;
     this.enumValidator = function(v){
-      return undefined === v || ~values.indexOf(v);
+      return ~values.indexOf(v);
     };
     this.validators.push([this.enumValidator, 'enum']);
   }
 };
 
 /**
- * Adds a lowercase setter.
- *
- * ####Example:
- *
- *     var s = new Schema({ email: { type: String, lowercase: true }})
- *     var M = db.model('M', s);
- *     var m = new M({ email: 'SomeEmail@example.COM' });
- *     console.log(m.email) // someemail@example.com
+ * Adds a lowercase setter
  *
  * @api public
  */
 
 SchemaString.prototype.lowercase = function () {
-  return this.set(function (v, self) {
-    if ('string' != typeof v) v = self.cast(v)
-    if (v) return v.toLowerCase();
-    return v;
+  return this.set(function (v) {
+    return v.toLowerCase();
   });
 };
 
 /**
- * Adds an uppercase setter.
- *
- * ####Example:
- *
- *     var s = new Schema({ caps: { type: String, uppercase: true }})
- *     var M = db.model('M', s);
- *     var m = new M({ caps: 'an example' });
- *     console.log(m.caps) // AN EXAMPLE
+ * Adds an uppercase setter
  *
  * @api public
  */
 
 SchemaString.prototype.uppercase = function () {
-  return this.set(function (v, self) {
-    if ('string' != typeof v) v = self.cast(v)
-    if (v) return v.toUpperCase();
-    return v;
+  return this.set(function (v) {
+    return v.toUpperCase();
   });
 };
 
 /**
- * Adds a trim setter.
- *
- * The string value will be trimmed when set.
- *
- * ####Example:
- *
- *     var s = new Schema({ name: { type: String, trim: true }})
- *     var M = db.model('M', s)
- *     var string = ' some name '
- *     console.log(string.length) // 11
- *     var m = new M({ name: string })
- *     console.log(m.name.length) // 9
+ * Adds a trim setter
  *
  * @api public
  */
 
 SchemaString.prototype.trim = function () {
-  return this.set(function (v, self) {
-    if ('string' != typeof v) v = self.cast(v)
-    if (v) return v.trim();
-    return v;
+  return this.set(function (v) {
+    return v.trim();
   });
 };
 
 /**
- * Sets a regexp validator.
+ * Sets a regexp test
  *
- * Any value that does not pass `regExp`.test(val) will fail validation.
- *
- * ####Example:
- *
- *     var s = new Schema({ name: { type: String, match: /^a/ }})
- *     var M = db.model('M', s)
- *     var m = new M({ name: 'invalid' })
- *     m.validate(function (err) {
- *       console.error(err) // validation error
- *       m.name = 'apples'
- *       m.validate(function (err) {
- *         assert.ok(err) // success
- *       })
- *     })
- *
- * @param {RegExp} regExp regular expression to test against
+ * @param {RegExp} regular expression to test against
+ * @param {String} optional validator message
  * @api public
  */
 
-SchemaString.prototype.match = function match (regExp) {
+SchemaString.prototype.match = function(regExp){
   this.validators.push([function(v){
-    return null != v && '' !== v
-      ? regExp.test(v)
-      : true
+    return regExp.test(v);
   }, 'regexp']);
 };
 
 /**
  * Check required
  *
- * @param {String|null|undefined} value
  * @api private
  */
 
@@ -197,10 +135,6 @@ SchemaString.prototype.cast = function (value, scope, init) {
   if ('undefined' !== typeof value && value.toString) return value.toString();
   throw new CastError('string', value);
 };
-
-/*!
- * ignore
- */
 
 function handleSingle (val) {
   return this.castForQuery(val);
@@ -226,14 +160,6 @@ SchemaString.prototype.$conditionalHandlers = {
   , '$options': handleSingle
 };
 
-/**
- * Casts contents for queries.
- *
- * @param {String} $conditional
- * @param {any} [val]
- * @api private
- */
-
 SchemaString.prototype.castForQuery = function ($conditional, val) {
   var handler;
   if (arguments.length === 2) {
@@ -248,7 +174,7 @@ SchemaString.prototype.castForQuery = function ($conditional, val) {
   }
 };
 
-/*!
+/**
  * Module exports.
  */
 

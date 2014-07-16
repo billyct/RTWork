@@ -6,7 +6,7 @@ exports.config = {
 	name: 'RTWorker',
 	description: 'RTWorker是一款用Node js 开发的钢筋翻样应用，用于系统管理建筑者的钢筋制作翻样',
 	host: 'http://127.0.0.1/',
-	db: 'mongodb://billyct:4179965@127.0.0.1/RTWorker',
+	db: 'mongodb://127.0.0.1/RTWorker',
 	session_secret: 'RTWorker',
 	auth_cookie_name: 'RTWorker',
 	port: 8000,

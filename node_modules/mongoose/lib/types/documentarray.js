@@ -1,31 +1,27 @@
 
-/*!
+/**
  * Module dependencies.
  */
 
 var MongooseArray = require('./array')
   , driver = global.MONGOOSE_DRIVER_PATH || '../drivers/node-mongodb-native'
   , ObjectId = require(driver + '/objectid')
-  , ObjectIdSchema = require('../schema/objectid')
-  , util = require('util')
+  , ObjectIdSchema = require('../schema/objectid');
 
 /**
- * DocumentArray constructor
+ * Array of embedded documents
+ * Values always have to be passed to the constructor to initialize, since
+ * otherwise MongooseArray#push will mark the array as modified to the parent.
  *
  * @param {Array} values
- * @param {String} path the path to this array
- * @param {Document} doc parent document
+ * @param {String} key path
+ * @param {Document} parent document
  * @api private
- * @return {MongooseDocumentArray}
- * @inherits MongooseArray
  * @see http://bit.ly/f6CnZU
  */
 
 function MongooseDocumentArray (values, path, doc) {
   var arr = [];
-
-  // Values always have to be passed to the constructor to initialize, since
-  // otherwise MongooseArray#push will mark the array as modified to the parent.
   arr.push.apply(arr, values);
   arr.__proto__ = MongooseDocumentArray.prototype;
 
@@ -43,34 +39,27 @@ function MongooseDocumentArray (values, path, doc) {
   return arr;
 };
 
-/*!
+/**
  * Inherits from MongooseArray
  */
 
 MongooseDocumentArray.prototype.__proto__ = MongooseArray.prototype;
 
 /**
- * Overrides MongooseArray#cast
+ * Overrides cast
  *
  * @api private
  */
 
 MongooseDocumentArray.prototype._cast = function (value) {
-  if (value instanceof this._schema.casterConstructor)
-    return value;
-
-  return new this._schema.casterConstructor(value, this);
+  var doc = new this._schema.casterConstructor(value, this);
+  return doc;
 };
 
 /**
- * Searches array items for the first document with a matching id.
+ * Filters items by id
  *
- * ####Example:
- *
- *     var embeddedDoc = m.array.id(some_id);
- *
- * @return {EmbeddedDocument|null} the subdocuent or null if not found.
- * @param {ObjectId|String|Number|Buffer} id
+ * @param {Object} id
  * @api public
  */
 
@@ -99,11 +88,8 @@ MongooseDocumentArray.prototype.id = function (id) {
 };
 
 /**
- * Returns a native js Array of plain js objects
- *
- * ####NOTE:
- *
- * _Each sub-document is converted to a plain object by calling its `#toObject` method._
+ * Returns an Array and converts any Document
+ * members toObject.
  *
  * @return {Array}
  * @api public
@@ -123,33 +109,14 @@ MongooseDocumentArray.prototype.toObject = function () {
 
 MongooseDocumentArray.prototype.inspect = function () {
   return '[' + this.map(function (doc) {
-    if (doc) {
-      return doc.inspect
-        ? doc.inspect()
-        : util.inspect(doc)
-    }
-    return 'null'
+    return doc && doc.inspect() || 'null';
   }).join('\n') + ']';
 };
 
 /**
- * Creates a subdocument casted to this schema.
- *
- * This is the same subdocument constructor used for casting.
- *
- * @param {Object} obj the value to cast to this arrays SubDocument schema
- * @api public
- */
-
-MongooseDocumentArray.prototype.create = function (obj) {
-  return new this._schema.casterConstructor(obj);
-}
-
-/**
- * Creates a fn that notifies all child docs of `event`.
+ * Create fn that notifies all child docs of event.
  *
  * @param {String} event
- * @return {Function}
  * @api private
  */
 
@@ -158,13 +125,12 @@ MongooseDocumentArray.prototype.notify = function notify (event) {
   return function notify (val) {
     var i = self.length;
     while (i--) {
-      if (!self[i]) continue;
       self[i].emit(event, val);
     }
   }
 }
 
-/*!
+/**
  * Module exports.
  */
 

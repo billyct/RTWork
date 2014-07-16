@@ -34,13 +34,13 @@ app.helpers({
 
 app.configure('development', function(){
 	app.use(express.static(static_dir));
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
 	var one_year=1000*60*60*24*365;
 	app.use(express.static(static_dir,{maxAge:one_year}));
-	app.use(express.errorHandler()); 
+	app.use(express.errorHandler());
 	app.set('view cache',true);
 });
 

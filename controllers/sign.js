@@ -35,7 +35,7 @@ exports.signup = function(req, res, next){
 			if (users.length > 0){
 
 				var result = {
-								success: 'failed', 
+								success: 'failed',
 								name:name,
 								message: '用户名或者Email已经存在'
 							};
@@ -52,7 +52,7 @@ exports.signup = function(req, res, next){
 					if(err) return next(err);
 
 					var result = {
-									success: 'success', 
+									success: 'success',
 									name:name,
 									message: '注册成功'
 								};
@@ -82,7 +82,7 @@ exports.signin = function(req, res, next){
 			if (err) {return next(err)};
 			if (!user){
 				result = {
-							success: 'failed', 
+							success: 'failed',
 							name:name,
 							message: '没有用户名为的'+name+'用户'
 						};
@@ -93,7 +93,7 @@ exports.signin = function(req, res, next){
 			pass = md5(pass);
 			if (pass != user.pass) {
 				var result = {
-								success: 'failed', 
+								success: 'failed',
 								name:name,
 								message: '密码不正确'
 							};
@@ -108,7 +108,7 @@ exports.signin = function(req, res, next){
 			console.log(req.session.user);
 
 			var result = {
-							success: 'success', 
+							success: 'success',
 							name:name,
 							message: '登录成功',
 							user: user
